@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.MichaelWei.GoTrainAlarmServer.Mapper.StopMapper" >
+    <resultMap id="AllStopsResultMap" type="com.MichaelWei.GoTrainAlarmServer.Bean.Stop" >
+        <id column="ID" property="id" jdbcType="CHAR" />
+        <result column="NAME" property="name" jdbcType="VARCHAR" />
+        <result column="URL" property="url" jdbcType="CHAR" />
+    </resultMap>
+
+    <sql id="AllStopsQueryFields" >
+        id, name, url
+    </sql>
+
+    <select id="getAll" resultMap="AllStopsResultMap"  >
+        SELECT
+        <include refid="AllStopsQueryFields" />
+        FROM STOPS
+    </select>
+
+    <sql id="VagueNameQueryField">
+        name
+    </sql>
+
+    <select id="selectByVagueName" parameterType="java.lang.String" >
+        SELECT
+        <include refid="VagueNameQueryField" />
+        FROM STOPS
+        WHERE MATCH (NAME) AGAINST (#{param1}) IN BOOLEAN MODE
+    </select>
+
+</mapper>
